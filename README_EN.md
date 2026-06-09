@@ -1,90 +1,106 @@
-# Plus PayPal 0-Amount Checkout Link Extractor (ChatGPT Extract Payment Link)
+# Plus PayPal Zero-Amount Link Extractor (ChatGPT PayPal Link Extraction Console)
 
-> **💡 Contributions via Pull Requests / Issues are highly welcome to co-create and improve this project!**
-> 
-> 💬 **Technical Discussion QQ Group**: **808987383** (Welcome to join and discuss protocol & payment security tech)
+<div align="center">
 
-> **⚠️ Acknowledgements & Source Code Leak Statement**
-> 
-> Due to a rushed deployment in the early stage, the source code of this project was accidentally leaked. Here, we would like to **express our sincere gratitude to the expert (大佬) for giving us a vivid and valuable lesson**. The expert's "guidance" not only prompted us to conduct a thorough security audit, parameterize configurations for data desensitization, and reinforce the system architecture, but also made us deeply realize the value of open-source sharing.
-> 
-> Now, we have decided to fully open-source this project, offering a platform for developers in network protocols, payment anti-fraud systems, and residential proxies to communicate and learn together.
+🇺🇸 English &nbsp;|&nbsp; 🇨🇳 [中文](./README.md)
+
+</div>
 
 ---
 
-## 📖 Introduction
+This project is a smart PayPal authorization link extraction gateway built on a **Zero-Amount isolation** risk-control model.
+It intercepts and extracts key context from Stripe Hosted Checkout sessions in real time, performs automated merchant verification on the PayPal channel, and extracts long PayPal authorization links with **zero funds collected**.
 
-`ChatGPT Extract Payment Link` is a PayPal smart checkout conversion gateway based on the **Zero-Amount** security verification logic.
-The system intercepts and extracts critical session context from Stripe Hosted Checkout, automatically completes merchant checks for the PayPal channel, and converts it into a high-security PayPal authorization long link.
+> Use cases: Network protocol analysis · Payment risk-control research · Residential proxy scheduling · API reverse engineering
+
+> 💡 **Pull Requests and Issues are welcome — let's build this together!**
+> 
+> 💬 **QQ Group (Tech Discussion)**: **808987383**
+
+---
+
+## 📖 Project Overview
+
+`ChatGPT PayPal Link Extractor` is a PayPal smart acquisition conversion gateway based on **Zero-Amount isolation** security risk-control logic.
+
+The system intercepts and extracts critical context from Stripe Hosted Checkout sessions in real time, performs automated merchant verification on the PayPal channel, and safely extracts PayPal authorization long-links with high automation and zero fund entry.
 
 ### 🌟 Core Features
-- **Zero-Amount Guard Checking**: Enforces sequential validation, only allowing sessions matching Zero-Amount rules to proceed, and blocks any non-zero abnormalities.
-- **Intelligent Residential Proxy Rotation**: Silently dispatches residential proxies (preferring JP/EU zones) in the background. If a proxy connection fails or is blocked, it automatically rotates to another IP.
-- **Dual-Engine Support**: Supports both a lightweight Python HTTP gateway and a high-performance Go concurrent gateway (located in [cmd/ppgateway/main.go](cmd/ppgateway/main.go)).
-- **Clickjacking Protection**: Built-in frame escape validation inside [webapp/static/index.html](webapp/static/index.html) to prevent malicious iframe embedding.
+
+- **Zero-Amount Defense**: Enforces sequential validation — only allows session submissions that comply with Zero-Amount rules; intercepts non-zero anomalies.
+- **Smart Residential Proxy Rotation**: Silently schedules multi-region (Japan/EU preferred) dynamic residential proxies in the background; auto-retries with a new IP when a proxy fails or is blocked.
+- **Dual-Engine Support**: Supports both a lightweight Python HTTP gateway and a high-performance Go concurrent proxy gateway ([cmd/ppgateway/main.go](cmd/ppgateway/main.go)).
+- **Anti-Clone Shield**: Embedded Clickjacking shield implemented in [webapp/static/index.html](webapp/static/index.html) — detects and escapes malicious iframe nesting.
 
 ---
 
-## 🛠 Architecture & Directory Structure
+## 🛠 Architecture & Core Modules
 
-The project is structured into three main parts: Gateway Service, Test Suite, and Automated Deployment:
+The project is divided into three main components: gateway service, test suite, and automated deployment.
 
-1. **Core Gateway (Python)**: [webapp/server.py](webapp/server.py)
-   - Handles dashboard UI rendering, JWT Access Token (e.g., OpenAI Session) parsing, transaction state management, and proxy preflight health checks.
-2. **Go Gateway (High-Performance)**: [cmd/ppgateway/main.go](cmd/ppgateway/main.go)
-   - Works with the [internal/gateway/server.go](internal/gateway/server.go) engine to provide concurrent link extraction and load balancing.
-3. **Automated Deployment**:
-   - Provides [deploy_server.py](deploy_server.py) (Python gateway deployment) and [deploy_go_gateway.py](deploy_go_gateway.py) (Go gateway deployment) with SSH environment diagnosis tool [diagnose.py](diagnose.py).
-4. **Unit Tests**: [tests/test_zero_gate.py](tests/test_zero_gate.py)
-   - Full offline suite validating the zero-guard checking logic, proxy geo-priority algorithms, and queue serialization.
-5. **Batch Probe Tool**: [tools/pp_batch_probe.py](tools/pp_batch_probe.py)
-   - Benchmarks gateway throughput, success rates, and latency.
+1. **Gateway Core (Python)**: [webapp/server.py](webapp/server.py)
+   - Handles frontend panel rendering, JWT Access Token extraction/parsing, gateway transaction state management, and proxy preflight checks.
+2. **Go Concurrent Gateway (High Performance)**: [cmd/ppgateway/main.go](cmd/ppgateway/main.go)
+   - Works with [internal/gateway/server.go](internal/gateway/server.go) to provide second-level high-concurrency link extraction and traffic splitting.
+3. **One-Click Automated Deployment**:
+   - [deploy_server.py](deploy_server.py) (Python gateway deployment) and [deploy_go_gateway.py](deploy_go_gateway.py) (Go gateway deployment). Use [diagnose.py](diagnose.py) for production environment diagnostics.
+4. **Unit Tests & Gate**: [tests/test_zero_gate.py](tests/test_zero_gate.py)
+   - Full automated tests covering zero-amount filtering logic, proxy geo-win-rate algorithm, and multi-account serial queuing.
+5. **Automated Probing Tool**: [tools/pp_batch_probe.py](tools/pp_batch_probe.py)
+   - Batch stress and throughput probing for merchant channels and proxy connection win rates.
 
 ---
 
-## 📦 One-Click Local Startup Package
+## 🚀 Quick Start
 
-Startup scripts are provided in the repository to automatically set up the workspace and start the service with one click.
+## 📦 One-Click Local Launch
 
-### 🚀 How to Run
+An automated startup script is included in the project root, designed for beginners or developers who want to get the service running quickly.
+
+### 🚀 Usage
+
 - **macOS / Linux**:
-  Execute the following command in your terminal (which runs [start.sh](start.sh)):
+  Run the following command in your terminal (automatically executes [start.sh](start.sh)):
   ```bash
   chmod +x start.sh
   ./start.sh
   ```
 - **Windows**:
-  Double-click the [start.bat](start.bat) batch file in the file explorer.
+  Double-click [start.bat](start.bat) in the project root directory.
 
-### ⚙️ What the Script Does Automatically
-1. **Config Auto-generation**: Copies `.env.example` to `.env` if not present.
-2. **Virtual Environment Setup**: Initializes a Python 3 virtual environment (`.venv`) locally to avoid dependency contamination.
-3. **Dependency Check**: Silently upgrades `pip` and installs `curl_cffi` (for Akamai/JA3/JA4 TLS fingerprint impersonation) and `playwright`.
-4. **Chromium Installation**: Automatically fetches the required headless Chromium browser binary.
-5. **Browser Open**: Launches your system's default browser and navigates to the gateway panel at `http://127.0.0.1:8888`.
+### ⚙️ Script Automation Workflow
+
+1. **Smart Environment Backup**: Checks for `.env` in the project root. If not found, automatically copies `.env.example` and renames it to `.env`.
+2. **Isolated Virtual Environment**: Automatically creates and initializes a Python virtual environment (`.venv`) in the project directory to prevent dependency conflicts.
+3. **Dependency Auto-Install**: Silently upgrades `pip` and installs the core communication engine `curl_cffi` (providing high-intensity JA3/JA4/Akamai browser fingerprint spoofing) and `playwright`.
+4. **Browser Kit Setup**: Automatically downloads and configures the Playwright-specific Headless Chromium browser components.
+5. **Auto-Open Browser**: Once the gateway service starts successfully, the script silently opens your default browser at: `http://127.0.0.1:8888`.
 
 ---
 
-## 🚀 Manual Startup & Debugging
+## 🚀 Manual Debug & Run
 
-If you prefer to start the server step-by-step or run it in a container:
+If you prefer a fully manual or containerized step-by-step setup:
 
-### 1. Copy Configuration
+### 1. Copy Environment Config
+
 Copy `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
-Fill in your remote server IP, SSH credentials, allowed domains, and residential proxies.
+Configure your remote server IP, SSH credentials, allowed domain list, and proxy settings.
 
-### 2. Manual Python Gateway
-Run the service (Python 3.10+ recommended):
+### 2. Run Python Console Manually
+
+Recommended with Python 3.10+ (with `curl_cffi` and `playwright` installed):
 ```bash
 python3 webapp/server.py --host 127.0.0.1 --port 8888
 ```
-Navigate to: `http://127.0.0.1:8888`
+Open your browser at: `http://127.0.0.1:8888`
 
-### 3. High-Performance Go Gateway
-Build and launch:
+### 3. Use the Go High-Concurrency Gateway
+
+To handle batch concurrent transactions, compile and run the Go gateway:
 ```bash
 go build -o ppgateway ./cmd/ppgateway/main.go
 ./ppgateway -addr 127.0.0.1:8787 -static webapp/static
@@ -92,22 +108,22 @@ go build -o ppgateway ./cmd/ppgateway/main.go
 
 ---
 
-## 🔧 Environment Variables Reference
+## 🔧 Environment Variables
 
-| Variable | Description | Example / Default |
+| Variable | Description | Default / Example |
 | :--- | :--- | :--- |
-| `DEPLOY_HOST` | Remote deployment server IP | `your_server_ip` |
+| `DEPLOY_HOST` | Target deployment server IP | `your_server_ip` |
 | `DEPLOY_USER` | Deployment server SSH username | `root` |
-| `DEPLOY_PASSWORD` | Deployment server SSH password | `your_ssh_password` |
-| `DEPLOY_DOMAIN` | Target domain name for deployment | `yourdomain.com` |
-| `ALLOWED_DOMAINS` | Allowed domains for the console (comma-separated)| `yourdomain.com,example.com` |
-| `SERVER_PUBLIC_IP` | Public IP of this server (for proxy whitelist guide) | `your_server_ip` |
+| `DEPLOY_PASSWORD` | SSH password / key passphrase | `your_ssh_password` |
+| `DEPLOY_DOMAIN` | Primary service domain to bind | `yourdomain.com` |
+| `ALLOWED_DOMAINS` | Console accessible domain whitelist (comma-separated) | `yourdomain.com,example.com` |
+| `SERVER_PUBLIC_IP` | Public IP of this gateway (for proxy whitelist hints) | `your_server_ip` |
 
 ---
 
-## 🧪 Running Unit Tests
+## 🧪 Unit Tests
 
-Run the unit tests locally to ensure gateway logic is correct:
+Run offline unit tests to verify gateway logic:
 ```bash
 python3 -m unittest discover -s tests -v
 ```
@@ -115,15 +131,15 @@ python3 -m unittest discover -s tests -v
 ---
 
 ## ⚖️ Disclaimer
-This project is open-sourced purely for security auditing, network protocol analysis, and anti-fraud academic research. No organization or individual shall use this project for fraudulent actions, payment bypasses, or any commercial activities violating third-party terms of service. The author is not liable for any legal consequences or security incidents arising from the use of this project.
+
+This project is open-sourced solely for security auditing, network protocol analysis, and academic research on anti-fraud interfaces. No organization or individual may use this project for illegal fraud, bypassing risk controls for commercial gain, or any activity that violates applicable laws or third-party service terms. The author assumes no responsibility for any security incidents or legal disputes arising therefrom.
 
 ---
 
-## 📈 Trends & Stats
+## 📈 Stats
 
 <p align="left">
   <img src="https://visitor-badge.laobi.icu/badge?page_id=jmmy9609-design.gpt-pp" alt="Visitors" />
 </p>
 
 [![Star History Chart](https://api.star-history.com/svg?repos=jmmy9609-design/gpt-pp&type=Date)](https://star-history.com/#jmmy9609-design/gpt-pp&Date)
-
